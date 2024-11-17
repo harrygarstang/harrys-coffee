@@ -21,7 +21,6 @@ const coffeeShops = [
     photos: ["https://via.placeholder.com/300"],
     review: "A charming spot with wonderful staff and great coffee. Perfect for reading or chatting with friends.",
   },
-  // Add more entries as needed
 ];
 
 function Home() {
@@ -38,101 +37,137 @@ function Home() {
   });
 
   return (
-    <div className="min-h-screen bg-gray-100">
-      {/* Toggle Button */}
-      <div className="p-4 flex justify-between items-center bg-blue-600 text-white">
-        <h1 className="text-xl font-bold">Coffee Blog</h1>
-        <button
-          onClick={() => setView(view === "list" ? "map" : "list")}
-          className="px-4 py-2 bg-blue-800 rounded-lg shadow-md hover:bg-blue-700"
-        >
-          {view === "list" ? "Switch to Map View" : "Switch to List View"}
-        </button>
-      </div>
-
-      {/* Filters */}
-      <div className="p-4">
-        <label className="block mb-2 font-bold">Filter by Location</label>
-        <select
-          value={filters.location}
-          onChange={(e) => setFilters({ ...filters, location: e.target.value })}
-          className="p-2 rounded-lg border border-gray-300"
-        >
-          <option value="all">All Locations</option>
-          <option value="London">London</option>
-          <option value="Bristol">Bristol</option>
-          <option value="Worcester">Worcester</option>
-        </select>
-
-        <div className="mt-4">
-          <label className="block mb-2 font-bold">Filter by Tags</label>
+    <div className="min-h-screen bg-cream">
+      {/* Navbar */}
+      <nav className="bg-brown text-cream p-4 fixed top-0 left-0 right-0 z-50 shadow-md">
+        <div className="container mx-auto flex justify-between items-center">
+          <h1 className="text-xl font-bold">
+            <Link to="/">Coffee Blog</Link>
+          </h1>
           <div className="flex gap-4">
-            {["cozy", "good for working", "bring your book"].map((tag) => (
-              <label key={tag} className="flex items-center space-x-2">
-                <input
-                  type="checkbox"
-                  checked={filters.tags.includes(tag)}
-                  onChange={(e) =>
-                    setFilters({
-                      ...filters,
-                      tags: e.target.checked
-                        ? [...filters.tags, tag]
-                        : filters.tags.filter((t) => t !== tag),
-                    })
-                  }
-                />
-                <span>{tag}</span>
-              </label>
-            ))}
+            <button
+              onClick={() => setView(view === "list" ? "map" : "list")}
+              className="bg-tan text-darkBrown px-4 py-2 rounded-lg shadow-md hover:bg-brown hover:text-cream"
+            >
+              {view === "list" ? "Switch to Map View" : "Switch to List View"}
+            </button>
+            <Link to="/about" className="hover:underline">
+              About
+            </Link>
           </div>
         </div>
-      </div>
+      </nav>
 
-      {/* List or Map View */}
-      {view === "list" ? (
-        <div className="p-4 grid grid-cols-1 md:grid-cols-2 gap-4">
-          {filteredShops.map((shop) => (
-            <div
-              key={shop.id}
-              className="bg-white shadow-lg rounded-lg overflow-hidden"
-              onClick={() => setSelectedCard(shop)}
-            >
-              <img src={shop.photos[0]} alt={shop.name} className="w-full h-48 object-cover" />
-              <div className="p-4">
-                <h3 className="text-xl font-bold">{shop.name}</h3>
-                <p className="text-gray-600">{shop.quote}</p>
-                <div className="flex gap-2 mt-2">
-                  {shop.tags.map((tag) => (
-                    <span
-                      key={tag}
-                      className="bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-sm"
-                    >
-                      {tag}
-                    </span>
-                  ))}
-                </div>
+      {/* Hero Section */}
+      <section className="relative bg-brown text-cream min-h-screen flex flex-col justify-center items-center pt-16">
+        <h1 className="text-5xl font-bold">Welcome to My Coffee Blog</h1>
+        <p className="mt-4 text-xl max-w-2xl text-center">
+          Hi, I'm [Your Name], a coffee enthusiast sharing my favorite coffee shops, reviews, and experiences.
+        </p>
+        <button
+          onClick={() => document.getElementById("main-feature").scrollIntoView({ behavior: "smooth" })}
+          className="mt-10 bg-tan text-darkBrown px-6 py-3 rounded-lg shadow-md hover:bg-brown hover:text-cream"
+        >
+          Explore My Coffee Journey
+        </button>
+        <div className="absolute bottom-10 animate-bounce">
+          <span className="text-cream text-lg">Scroll Down ↓</span>
+        </div>
+      </section>
+
+      {/* Main Feature Section */}
+      <section id="main-feature" className="p-8 pt-24">
+        <h2 className="text-3xl font-bold text-darkBrown text-center">Coffee Shops I Love</h2>
+        <p className="text-center text-tan mt-2">Explore some of my favorite spots for coffee, work, and relaxation.</p>
+
+        {/* Filters */}
+        <div className="mt-8 bg-tan p-4 rounded-lg shadow-md">
+          <div className="flex flex-col md:flex-row gap-4 items-start">
+            <div>
+              <label className="block mb-2 font-bold text-darkBrown">Filter by Location</label>
+              <select
+                value={filters.location}
+                onChange={(e) => setFilters({ ...filters, location: e.target.value })}
+                className="p-2 rounded-lg border border-darkBrown text-darkBrown bg-cream"
+              >
+                <option value="all">All Locations</option>
+                <option value="London">London</option>
+                <option value="Bristol">Bristol</option>
+                <option value="Worcester">Worcester</option>
+              </select>
+            </div>
+
+            <div>
+              <label className="block mb-2 font-bold text-darkBrown">Filter by Tags</label>
+              <div className="flex gap-2 flex-wrap">
+                {["cozy", "good for working", "bring your book"].map((tag) => (
+                  <button
+                    key={tag}
+                    onClick={() =>
+                      setFilters({
+                        ...filters,
+                        tags: filters.tags.includes(tag)
+                          ? filters.tags.filter((t) => t !== tag) // Unselect tag
+                          : [...filters.tags, tag], // Select tag
+                      })
+                    }
+                    className={`px-3 py-1 rounded-full text-sm font-medium shadow-md transition-colors duration-200 ${
+                      filters.tags.includes(tag)
+                        ? "bg-brown text-cream" // Selected state
+                        : "bg-cream text-darkBrown hover:bg-brown hover:text-cream" // Default state
+                    }`}
+                  >
+                    {tag}
+                  </button>
+                ))}
               </div>
             </div>
-          ))}
+          </div>
         </div>
-      ) : (
-        <div className="p-4">Map View Placeholder</div>
-      )}
+
+        {/* List or Map View */}
+        {view === "list" ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-8">
+            {filteredShops.map((shop) => (
+              <div
+                key={shop.id}
+                className="bg-white shadow-lg rounded-lg overflow-hidden cursor-pointer hover:shadow-xl"
+                onClick={() => setSelectedCard(shop)}
+              >
+                <img src={shop.photos[0]} alt={shop.name} className="w-full h-48 object-cover" />
+                <div className="p-4">
+                  <h3 className="text-xl font-bold text-darkBrown">{shop.name}</h3>
+                  <p className="text-tan">{shop.quote}</p>
+                  <div className="flex gap-2 mt-2 flex-wrap">
+                    {shop.tags.map((tag) => (
+                      <span
+                        key={tag}
+                        className="bg-cream text-darkBrown px-2 py-1 rounded-full text-sm"
+                      >
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div className="p-4 text-center text-darkBrown">Map View Placeholder</div>
+        )}
+      </section>
 
       {/* Card Modal */}
       {selectedCard && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
           <div className="bg-white p-8 rounded-lg max-w-lg w-full relative">
-            {/* Close Button */}
             <button
               onClick={() => setSelectedCard(null)}
-              className="absolute top-4 right-4 bg-gray-200 text-gray-600 hover:text-gray-800 hover:bg-gray-300 rounded-full w-8 h-8 flex items-center justify-center"
+              className="absolute top-4 right-4 bg-tan text-darkBrown hover:bg-brown hover:text-cream rounded-full w-8 h-8 flex items-center justify-center"
             >
               &times;
             </button>
-
-            {/* Card Content */}
-            <h2 className="text-2xl font-bold">{selectedCard.name}</h2>
+            <h2 className="text-2xl font-bold text-darkBrown">{selectedCard.name}</h2>
             <p className="text-gray-700 mt-4">{selectedCard.review}</p>
             {selectedCard.photos.map((photo, index) => (
               <img
@@ -145,7 +180,6 @@ function Home() {
           </div>
         </div>
       )}
-
     </div>
   );
 }
