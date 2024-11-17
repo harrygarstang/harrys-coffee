@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 // Placeholder Data
 const coffeeShops = [
@@ -38,91 +38,80 @@ function Home() {
 
   return (
     <div className="min-h-screen bg-cream">
-      {/* Navbar */}
-      <nav className="bg-brown text-cream p-4 fixed top-0 left-0 right-0 z-50 shadow-md">
-        <div className="container mx-auto flex justify-between items-center">
-          <h1 className="text-xl font-bold">
-            <Link to="/">Coffee Blog</Link>
-          </h1>
-          <div className="flex gap-4">
-            <button
-              onClick={() => setView(view === "list" ? "map" : "list")}
-              className="bg-tan text-darkBrown px-4 py-2 rounded-lg shadow-md hover:bg-brown hover:text-cream"
-            >
-              {view === "list" ? "Switch to Map View" : "Switch to List View"}
-            </button>
-            <Link to="/about" className="hover:underline">
-              About
-            </Link>
-          </div>
-        </div>
-      </nav>
-
       {/* Hero Section */}
-      <section className="relative bg-brown text-cream min-h-screen flex flex-col justify-center items-center pt-16">
-        <h1 className="text-5xl font-bold">Welcome to My Coffee Blog</h1>
-        <p className="mt-4 text-xl max-w-2xl text-center">
-          Hi, I'm [Your Name], a coffee enthusiast sharing my favorite coffee shops, reviews, and experiences.
-        </p>
-        <button
-          onClick={() => document.getElementById("main-feature").scrollIntoView({ behavior: "smooth" })}
-          className="mt-10 bg-tan text-darkBrown px-6 py-3 rounded-lg shadow-md hover:bg-brown hover:text-cream"
-        >
-          Explore My Coffee Journey
-        </button>
-        <div className="absolute bottom-10 animate-bounce">
-          <span className="text-cream text-lg">Scroll Down ↓</span>
-        </div>
-      </section>
+      <section
+  className="relative min-h-screen flex flex-col justify-center items-center text-cream"
+  style={{
+    backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('image.jpg')`,
+    backgroundSize: 'cover',
+    backgroundPosition: 'bottom', // Focus on the bottom half of the image
+  }}
+>
+  <h1 className="text-5xl font-bold">you don't deserve bad coffee.</h1>
+  <p className="mt-4 text-xl max-w-2xl text-center">
+    I spend my weekends trying out new coffee shops, so that you don't 
+  </p>
+  <button className="mt-10 bg-gradient-to-r from-brown to-tan text-cream px-6 py-3 rounded-lg shadow-md hover:from-tan hover:to-darkBrown">
+    Explore My Coffee Journey
+  </button>
+  <div className="absolute bottom-10 animate-bounce">
+    <span className="text-cream text-lg">Scroll Down ↓</span>
+  </div>
+</section>
+
+
+
 
       {/* Main Feature Section */}
       <section id="main-feature" className="p-8 pt-24">
         <h2 className="text-3xl font-bold text-darkBrown text-center">Coffee Shops I Love</h2>
         <p className="text-center text-tan mt-2">Explore some of my favorite spots for coffee, work, and relaxation.</p>
 
-        {/* Filters */}
-        <div className="mt-8 bg-tan p-4 rounded-lg shadow-md">
-          <div className="flex flex-col md:flex-row gap-4 items-start">
-            <div>
-              <label className="block mb-2 font-bold text-darkBrown">Filter by Location</label>
-              <select
-                value={filters.location}
-                onChange={(e) => setFilters({ ...filters, location: e.target.value })}
-                className="p-2 rounded-lg border border-darkBrown text-darkBrown bg-cream"
-              >
-                <option value="all">All Locations</option>
-                <option value="London">London</option>
-                <option value="Bristol">Bristol</option>
-                <option value="Worcester">Worcester</option>
-              </select>
-            </div>
-
-            <div>
-              <label className="block mb-2 font-bold text-darkBrown">Filter by Tags</label>
-              <div className="flex gap-2 flex-wrap">
-                {["cozy", "good for working", "bring your book"].map((tag) => (
-                  <button
-                    key={tag}
-                    onClick={() =>
-                      setFilters({
-                        ...filters,
-                        tags: filters.tags.includes(tag)
-                          ? filters.tags.filter((t) => t !== tag) // Unselect tag
-                          : [...filters.tags, tag], // Select tag
-                      })
-                    }
-                    className={`px-3 py-1 rounded-full text-sm font-medium shadow-md transition-colors duration-200 ${
-                      filters.tags.includes(tag)
-                        ? "bg-brown text-cream" // Selected state
-                        : "bg-cream text-darkBrown hover:bg-brown hover:text-cream" // Default state
-                    }`}
-                  >
-                    {tag}
-                  </button>
-                ))}
-              </div>
-            </div>
+        {/* Filters and Switch View */}
+        <div className="flex justify-between items-center mt-8 bg-tan p-4 rounded-lg shadow-md">
+          <div>
+            <label className="block mb-2 font-bold text-darkBrown">Filter by Location</label>
+            <select
+              value={filters.location}
+              onChange={(e) => setFilters({ ...filters, location: e.target.value })}
+              className="p-2 rounded-lg border border-darkBrown text-darkBrown bg-cream"
+            >
+              <option value="all">All Locations</option>
+              <option value="London">London</option>
+              <option value="Bristol">Bristol</option>
+              <option value="Worcester">Worcester</option>
+            </select>
           </div>
+
+          <button
+            onClick={() => setView(view === "list" ? "map" : "list")}
+            className="bg-brown text-cream px-6 py-3 rounded-lg shadow-md hover:bg-darkBrown"
+          >
+            {view === "list" ? "Switch to Map View" : "Switch to List View"}
+          </button>
+        </div>
+
+        {/* Tags */}
+        <div className="flex gap-2 flex-wrap mt-4">
+          {["cozy", "good for working", "bring your book"].map((tag) => (
+            <button
+              key={tag}
+              onClick={() =>
+                setFilters({
+                  ...filters,
+                  tags: filters.tags.includes(tag)
+                    ? filters.tags.filter((t) => t !== tag) // Unselect tag
+                    : [...filters.tags, tag], // Select tag
+                })
+              }
+              className={`px-3 py-1 rounded-full text-sm font-medium shadow-md transition-colors duration-200 ${filters.tags.includes(tag)
+                  ? "bg-brown text-cream" // Selected state
+                  : "bg-cream text-darkBrown hover:bg-brown hover:text-cream" // Default state
+                }`}
+            >
+              {tag}
+            </button>
+          ))}
         </div>
 
         {/* List or Map View */}
